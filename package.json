@@ -1,0 +1,22 @@
+{
+  "name": "jikanjs",
+  "version": "0.3.0",
+  "description": "A small Wrapper for the unofficial MAL API jikan.me",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zuritor/jikanjs.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.6"
+  }
+}
