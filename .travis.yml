@@ -1,2 +1,6 @@
 language: node_js
-script: "npm test"
+node_js:
+  - "node"
+  - "lts/*"
+  - "8"
+  script: "npm test"
