@@ -2,4 +2,6 @@ language: node_js
 node_js:
   - "8"
 script: "npm run coverage"
-after_script: "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+after_script: 
+  - "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+  - npm run snyk-test
