@@ -3,7 +3,7 @@
 Jikanjs
 =======
 
-Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.com/jikan-me/jikan). For more information, please visit the [jikan.me documentation](https://jikan.me/docs).
+Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.com/jikan-me/jikan). For more information about the jikan.me, please visit the [jikan.me documentation](https://jikan.me/docs).
 
 ## Installation
 
