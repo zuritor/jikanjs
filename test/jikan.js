@@ -8,18 +8,15 @@ const pkg                           = require('../package');
 
 describe(`${pkg.name}/Client`, function() {
 
+    this.timeout(4000);
+
     describe('#Anime', function() {
 
-        it('loaded anime', function(done) {
-            const response = jikanjs.loadAnime(1);
+        it('loaded anime', async function() {
+            const response = await jikanjs.loadAnime(1);
 
-            response.then(function(response) {
-                assert.equal(response.mal_id, 1, 'wrong id, should be 1');
-                assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
-                done();
-            }).catch(function(error) {
-                assert.throws(error);
-            })
+            assert.equal(response.mal_id, 1, 'wrong id, should be 1');
+            assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
         })
 
         it('episode request extension test',function(done) {
@@ -33,7 +30,7 @@ describe(`${pkg.name}/Client`, function() {
                 assert.isAbove(response.episode_last_page, 7, 'not more than 7 pages, should be more');
                 done();
             }).catch(function(error) {
-                assert.throws(error);
+                done(error);
             })
         })
 
@@ -41,7 +38,7 @@ describe(`${pkg.name}/Client`, function() {
             const response = jikanjs.loadAnime(0);
 
             response.then(function(response) {
-                assert.throws(response);
+                done(response);
             }).catch(function(error) {
                 assert.equal(error.status, 404);
                 done();
@@ -58,7 +55,7 @@ describe(`${pkg.name}/Client`, function() {
                 assert.equal(response.title, 'Berserk', 'wrong title should be Berserk');
                 done();
             }).catch(function(error) {
-                assert.throws(error);
+                done(error);
             })
         })
     })
@@ -72,7 +69,7 @@ describe(`${pkg.name}/Client`, function() {
                 assert.equal(response.name, 'Rie Kugimiya', 'wrong name should be Rie Kugimiya');
                 done();
             }).catch(function(error) {
-                assert.throws(error);
+                done(error);
             })
         })
     })
@@ -86,7 +83,7 @@ describe(`${pkg.name}/Client`, function() {
                 assert.equal(response.name, 'Inori Yuzuriha', 'wrong name should be Inori Yuzuriha');
                 done();
             }).catch(function(error) {
-                assert.throws(error);
+                done(error);
             })
         })
     })
@@ -99,7 +96,7 @@ describe(`${pkg.name}/Client`, function() {
                 assert.isNotEmpty(response, 'response should not be empty');
                 done();
             }).catch(function(error) {
-                assert.throws(error);
+                done(error);
             })
         })
     })
