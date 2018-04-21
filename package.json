@@ -1,6 +1,6 @@
 {
   "name": "jikanjs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A small Wrapper for the unofficial MAL API jikan.me",
   "main": "index.js",
   "scripts": {
