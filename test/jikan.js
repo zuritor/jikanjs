@@ -63,6 +63,18 @@ describe(`${pkg.name}/Client`, function() {
 
             assert.isNotEmpty(response, 'response should not be empty');
         })
+
+        it('search Anime with less than 3 letters', async function() {
+            var query = 'On';
+
+            try {
+                await jikanjs.search('anime', query);
+    
+            } catch (error) {
+                assert.equal(error.message, `The given query must be of minium 3 letters! Given query '${query}' has only ${query.length} letters.`);
+                assert.equal(error.status, 400);
+            }
+        })
     })
 
     describe('#Error Handling', function() {
