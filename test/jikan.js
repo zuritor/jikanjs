@@ -75,6 +75,13 @@ describe(`${pkg.name}/Client`, function() {
                 assert.equal(error.status, 400);
             }
         })
+
+        it('advance search (search the current airing series One Piece)', async function() {
+            const response = await jikanjs.search('anime', 'One Piece', 1, {type: 'tv', status: 'airing'});
+
+            assert.isDefined(response.result, 'result should be defined');
+            assert.isNotEmpty(response, 'response should not be empty');
+        })
     })
 
     describe('#Season', function() {
