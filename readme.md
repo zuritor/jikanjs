@@ -12,15 +12,19 @@ Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.
 
 ## wrapped jikan Features
 
-* Anime Parsing
-* Manga Parsing
-* Character Parsing
-* People Parsing
-* Search
-* Seasonal Anime
-* Anime Schedule
-* Top
-* Meta
+* [Anime Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#anime-parsing)
+* [Manga Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#manga-parsing)
+* [Character Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#character-parsing)
+* [People Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#person-parsing)
+* [Search](https://github.com/zuritor/jikanjs/blob/master/readme.md#search)
+* [Seasonal Anime](https://github.com/zuritor/jikanjs/blob/master/readme.md#seasonal-anime)
+* [Anime Schedule](https://github.com/zuritor/jikanjs/blob/master/readme.md#anime-schedule)
+* [Top](https://github.com/zuritor/jikanjs/blob/master/readme.md#top)
+* [Meta](https://github.com/zuritor/jikanjs/blob/master/readme.md#meta)
+
+## Additional
+
+* [Raw](https://github.com/zuritor/jikanjs/blob/master/readme.md#raw)
 
 ## Usage
 
