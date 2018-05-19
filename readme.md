@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/zuritor/jikanjs.svg?branch=master)](https://travis-ci.org/zuritor/jikanjs) [![Coverage Status](https://coveralls.io/repos/github/zuritor/jikanjs/badge.svg?branch=master)](https://coveralls.io/github/zuritor/jikanjs?branch=master)                 
-[![Known Vulnerabilities](https://snyk.io/test/github/zuritor/jikanjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zuritor/jikanjs?targetFile=package.json)
+[![Build Status](https://travis-ci.org/zuritor/jikanjs.svg?branch=master)](https://travis-ci.org/zuritor/jikanjs) [![Coverage Status](https://coveralls.io/repos/github/zuritor/jikanjs/badge.svg?branch=master)](https://coveralls.io/github/zuritor/jikanjs?branch=master) [![Known Vulnerabilities](https://snyk.io/test/github/zuritor/jikanjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zuritor/jikanjs?targetFile=package.json)
               
 
 Jikanjs
