@@ -1,6 +1,6 @@
 {
   "name": "jikanjs",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A small Wrapper for the unofficial MAL API jikan.me",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "request": "^2.85.0"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

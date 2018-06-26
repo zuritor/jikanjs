@@ -5,6 +5,14 @@ const assert                        = require('chai').assert;
 const jikanjs                       = require('../lib/jikan');
 const pkg                           = require('../package');
 
+// to not overload the API
+beforeEach(function (done) {
+    this.timeout(10000);
+
+    setTimeout(function(){
+        done();
+    }, 3000);
+});
 
 describe(`${pkg.name}/Client`, function() {
 
@@ -72,7 +80,6 @@ describe(`${pkg.name}/Client`, function() {
     
             } catch (error) {
                 assert.equal(error.message, `The given query must be of minium 3 letters! Given query '${query}' has only ${query.length} letters.`);
-                assert.equal(error.status, 400);
             }
         })
 
@@ -151,17 +158,23 @@ describe(`${pkg.name}/Client`, function() {
             assert.isDefined(response.cached_requests, 'cached_requests should be defined');
         })
     })
-
+    
     describe('#Raw', function() {
-        it('send a raw request', async function() {
+        it('send a simple request', async function() {
             const response = await jikanjs.raw(['anime', 1]);
 
             assert.isNotEmpty(response, 'response should not be empty');
             assert.equal(response.mal_id, 1, 'wrong id, should be 1');
             assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
         })
-    })
 
+        it('send request with query parameter', async function() {
+            const response = await jikanjs.raw(['search', 'anime', 'One Piece', 1], {type: 'tv', status: 'airing'});
+
+            assert.isDefined(response.result, 'result should be defined');
+            assert.isNotEmpty(response, 'response should not be empty');
+        })
+    })
 
     describe('#Error Handling', function() {
 
@@ -174,6 +187,7 @@ describe(`${pkg.name}/Client`, function() {
             } catch (error) {
                 assert.equal(error.message, `Invalid extended request: "${extension}"`);
                 assert.equal(error.status, 400);
+                assert.equal(error.url, 'https://api.jikan.moe/anime/21/titles');
             }
         })    
         
@@ -184,6 +198,7 @@ describe(`${pkg.name}/Client`, function() {
             } catch (error) {
                 assert.equal(error.message, 'No ID/Path Given');
                 assert.equal(error.status, 404);
+                assert.equal(error.url, 'https://api.jikan.moe/anime');
             }
         })    
 
@@ -194,7 +209,8 @@ describe(`${pkg.name}/Client`, function() {
             } catch (error) {
                 assert.equal(error.message, 'File does not exist');
                 assert.equal(error.status, 404);
+                assert.equal(error.url, 'https://api.jikan.moe/anime/2');
             }
-        })    
+        })
     })
 });

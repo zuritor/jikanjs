@@ -4,7 +4,7 @@
 Jikanjs
 =======
 
-Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.com/jikan-me/jikan). For more information about the jikan.me, please visit the [jikan.me documentation](https://jikan.me/docs).
+Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.com/jikan-me/jikan). For more information about the jikan.me, please visit the [jikan.me documentation](https://jikan.moe/docs).
 
 ## Installation
 
@@ -12,19 +12,19 @@ Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.
 
 ## wrapped jikan Features
 
-* [Anime Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#anime-parsing)
-* [Manga Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#manga-parsing)
-* [Character Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#character-parsing)
-* [People Parsing](https://github.com/zuritor/jikanjs/blob/master/readme.md#person-parsing)
-* [Search](https://github.com/zuritor/jikanjs/blob/master/readme.md#search)
-* [Seasonal Anime](https://github.com/zuritor/jikanjs/blob/master/readme.md#seasonal-anime)
-* [Anime Schedule](https://github.com/zuritor/jikanjs/blob/master/readme.md#anime-schedule)
-* [Top](https://github.com/zuritor/jikanjs/blob/master/readme.md#top)
-* [Meta](https://github.com/zuritor/jikanjs/blob/master/readme.md#meta)
+* [Anime Parsing](https://github.com/zuritor/jikanjs#anime-parsing)
+* [Manga Parsing](https://github.com/zuritor/jikanjs#manga-parsing)
+* [Character Parsing](https://github.com/zuritor/jikanjs#character-parsing)
+* [People Parsing](https://github.com/zuritor/jikanjs#person-parsing)
+* [Search](https://github.com/zuritor/jikanjs#search)
+* [Seasonal Anime](https://github.com/zuritor/jikanjs#seasonal-anime)
+* [Anime Schedule](https://github.com/zuritor/jikanjs#anime-schedule)
+* [Top](https://github.com/zuritor/jikanjs#top)
+* [Meta](https://github.com/zuritor/jikanjs#meta)
 
 ## Additional
 
-* [Raw](https://github.com/zuritor/jikanjs/blob/master/readme.md#raw)
+* [Raw](https://github.com/zuritor/jikanjs#raw)
 
 ## Usage
 
@@ -223,10 +223,20 @@ The raw function can be used as an alternative way to use the Jiken.me API or fo
 
 ```javascript
 // Parameter which should be used for the request. 
-// The function will build the following url 
+// The function will build the following url https://api.jikan.moe/anime/1
 var params = ['anime', 1];
 jikanjs.raw(params).then(function (response) {
-    // do stuff here https://api.jikan.moe/anime/1
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+
+// also is it possible to use query parameter
+// for example to do a complex searching like: https://api.jikan.moe/search/anime/One Piece/1?type=tv&status=airing
+var params = ['search', 'anime', 'One Piece', 1];
+var qparams = {type: 'tv', status: 'airing'};
+jikanjs.raw(params, params).then(function (response) {
+    // do stuff here
 }).catch(function (err) {
     // handle error
 });
