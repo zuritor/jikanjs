@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/zuritor/jikanjs.svg?branch=master)](https://travis-ci.org/zuritor/jikanjs) [![Coverage Status](https://coveralls.io/repos/github/zuritor/jikanjs/badge.svg?branch=master)](https://coveralls.io/github/zuritor/jikanjs?branch=master) [![Known Vulnerabilities](https://snyk.io/test/github/zuritor/jikanjs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zuritor/jikanjs?targetFile=package.json)
-              
+
 
 Jikanjs
 =======
@@ -19,6 +19,10 @@ Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.
 * [Search](https://github.com/zuritor/jikanjs#search)
 * [Seasonal Anime](https://github.com/zuritor/jikanjs#seasonal-anime)
 * [Anime Schedule](https://github.com/zuritor/jikanjs#anime-schedule)
+* [Genre](https://github.com/zuritor/jikanjs#genre) (v3)
+* [Producer](https://github.com/zuritor/jikanjs#producer) (v3)
+* [Magazine](https://github.com/zuritor/jikanjs#magazine) (v3)
+* [User](https://github.com/zuritor/jikanjs#user) (v3)
 * [Top](https://github.com/zuritor/jikanjs#top)
 * [Meta](https://github.com/zuritor/jikanjs#meta)
 
@@ -29,7 +33,14 @@ Jikanjs is a small Wrapper for the unofficial MAL API [jikan.me](https://github.
 ## Usage
 
 ```javascript
-const jikanjs  = require('jikanjs');
+const jikanjs  = require('jikanjs'); // Uses per default the API version 3
+```
+
+### Modify API Version
+To cange the API version the following can be done:
+
+```javascript
+jikanjs.settings.version = 2; // changes the API version to 2
 ```
 
 ### Anime Parsing
@@ -49,7 +60,7 @@ jikanjs.loadAnime(1, 'characters_staff').then(function (response) {
     // handle error
 });
 
-// furthermore it is possible to get the secound, third, ... page of episodes if the anime has more than 100 episodes. 
+// furthermore it is possible to get the secound, third, ... page of episodes if the anime has more than 100 episodes.
 jikanjs.loadAnime(1, 'episodes', 2).then(function (response) {
     // do stuff here
 }).catch(function (err) {
@@ -131,7 +142,7 @@ jikanjs.search(type, 'search query', 2).then(function (response) {
     // handle error
 });
 
-// to execute a complexe search query with multiple parameter to filter the result 
+// to execute a complexe search query with multiple parameter to filter the result
 // an object with the Advanced Search Parameters needs to be deliverd.
 var params = {
     type: 'tv', // to receive only tv series
@@ -162,14 +173,14 @@ Visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/season)
 ### Anime Schedule
 
 ```javascript
-// Retrieve the current Schedule 
+// Retrieve the current Schedule
 jikanjs.loadSchedule().then(function (response) {
     // do stuff here
 }).catch(function (err) {
     // handle error
 });
 
-// also it is possible to get the Schedule of a weekday 
+// also it is possible to get the Schedule of a weekday
 jikanjs.loadSchedule('monday').then(function (response) {
     // do stuff here
 }).catch(function (err) {
@@ -206,6 +217,69 @@ jikanjs.loadTop('anime', 2, 'tv').then(function (response) {
 
 To see all possible subtypes which can be filtered visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/top).
 
+### Genre
+Added at jikan API version 3
+
+```javascript
+// Retrieve a List of all animes of specific Genre By its ID
+jikanjs.loadGenre('anime', 1).then(function (response) {
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+```
+
+Visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/genre) for more Information.
+
+### Producer
+Added at jikan API version 3
+
+```javascript
+// Retrieve Information of one specific Producer By its ID
+jikanjs.loadProducer(1).then(function (response) {
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+```
+
+Visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/producer) for more Information.
+
+### Magazine
+Added at jikan API version 3
+
+```javascript
+// Retrieve Information of one specific Magazine By its ID
+jikanjs.loadMagazine(1).then(function (response) {
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+```
+
+Visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/magazine) for more Information.
+
+### User
+Added at jikan API version 3
+
+```javascript
+// loads Information of a spezific MAL User by its username
+jikanjs.loadUser('zuritor').then(function (response) {
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+
+// addition load all animes in the History of a User
+jikanjs.loadUser('zuritor', 'history', 'anime').then(function (response) {
+    // do stuff here
+}).catch(function (err) {
+    // handle error
+});
+```
+
+For more Options and Information what is possible visit [jikan.me documentation](https://jikan.docs.apiary.io/#reference/0/user).
+
 ### Meta
 
 ```javascript
@@ -221,21 +295,13 @@ This is for request Information related to the Jikan REST Instance. See [jikan.m
 
 The raw function can be used as an alternative way to use the Jiken.me API or for new API routes which are not yet covered by the current Jikanjs wrapper version
 
+NOTICE: can currently not be used for searches because of the latest API changes
+
 ```javascript
-// Parameter which should be used for the request. 
+// Parameter which should be used for the request.
 // The function will build the following url https://api.jikan.moe/anime/1
 var params = ['anime', 1];
 jikanjs.raw(params).then(function (response) {
-    // do stuff here
-}).catch(function (err) {
-    // handle error
-});
-
-// also is it possible to use query parameter
-// for example to do a complex searching like: https://api.jikan.moe/search/anime/One Piece/1?type=tv&status=airing
-var params = ['search', 'anime', 'One Piece', 1];
-var qparams = {type: 'tv', status: 'airing'};
-jikanjs.raw(params, params).then(function (response) {
     // do stuff here
 }).catch(function (err) {
     // handle error
