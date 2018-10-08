@@ -1,3 +1,3 @@
-const jikan             = require('./lib/jikan');
+const jikan = require('./lib/jikan');
 
 module.exports = jikan;
