@@ -4,10 +4,9 @@
   "description": "A small Wrapper for the unofficial MAL API jikan.me",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "snyk-test": "./node_modules/.bin/snyk test",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
-    "dev": "nodemon server.js"
+    "test": "mocha",
+    "snyk-test": "snyk test",
+    "coverage": "istanbul cover _mocha"
   },
   "repository": {
     "type": "git",
@@ -16,13 +15,15 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0"
+    "cross-fetch": "^2.2.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
-    "nodemon": "^1.17.3",
     "snyk": "^1.73.0"
   }
 }
