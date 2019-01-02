@@ -1,6 +1,3 @@
-//@ts-check
-'use strict';
-
 const assert                        = require('chai').assert;
 const jikanjs                       = require('../lib/jikan');
 const pkg                           = require('../package');
@@ -22,6 +19,17 @@ describe(`${pkg.name}/API/v2`, function() {
         done();
     });
 
+    describe('#General', function() {
+
+        it('API version', function() {
+            assert.equal(jikanjs.settings.version, 2, 'the api version should be 2');
+        });
+
+        it('API base url', function() {
+            assert.equal(jikanjs.settings.getBaseURL().href, 'https://api.jikan.moe/v2', 'the Base url should be https://api.jikan.moe/v2');
+        });
+    });
+
     describe('#Anime', function() {
 
         it('loaded anime', async function() {
@@ -29,7 +37,7 @@ describe(`${pkg.name}/API/v2`, function() {
 
             assert.equal(response.mal_id, 1, 'wrong id, should be 1');
             assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
-        })
+        });
 
         it('episode request extension test', async function() {
             const response = await jikanjs.loadAnime(21, 'episodes', 2);
@@ -39,8 +47,8 @@ describe(`${pkg.name}/API/v2`, function() {
             assert.isNotEmpty(response.episode, 'is not empty');
             assert.equal(response.episode.length, 100, 'less or more than 100 episodes, should be 100');
             assert.isAbove(response.episode_last_page, 7, 'not more than 7 pages, should be more');
-        })
-    })
+        });
+    });
 
     describe('#Manga', function() {
         it('loaded manga',  async function() {
@@ -83,7 +91,7 @@ describe(`${pkg.name}/API/v2`, function() {
                 await jikanjs.search('anime', query);
 
             } catch (error) {
-                assert.equal(error.message, `The given query must be of minium 3 letters! Given query '${query}' has only ${query.length} letters.`);
+                assert.equal(error.message, `The given query must be of minimum 3 letters! Given query '${query}' has only ${query.length} letters.`);
             }
         })
 
@@ -100,21 +108,39 @@ describe(`${pkg.name}/API/v2`, function() {
             const response = await jikanjs.loadSeason(2012, 'winter');
 
             assert.isDefined(response.season, 'season should be defined');
-            assert.equal(response.season_year, `2012`, 'Season Year shoulb be 2012');
+            assert.equal(response.season_year, `2012`, 'Season Year should be 2012');
             assert.equal(response.season_name, `Winter`, 'Season name should be Winter');
             assert.isNotEmpty(response, 'response should not be empty');
             assert.isAbove(response.season.length, 1, 'season should have minimum of one series');
         })
+
+        it('fetch all upcoming anime [Season Later] (Usable at API Version 3+)', async function() {
+            try {
+                await await jikanjs.loadSeasonLater();
+
+            } catch (error) {
+                assert.equal(error.message, `Usable at API version 3+`);
+            }
+        })
+
+        it('fetch all registered years with their seasons [Season Archive] (Usable at API Version 3+)', async function() {
+            try {
+                await await jikanjs.loadSeasonLater();
+
+            } catch (error) {
+                assert.equal(error.message, `Usable at API version 3+`);
+            }
+        })
     })
 
     describe('#Schedule', function() {
-        it('load the current shadule', async function() {
+        it('load the current schedule', async function() {
             const response = await jikanjs.loadSchedule();
 
             assert.isNotEmpty(response, 'response should not be empty');
         })
 
-        it('load shedule of monday', async function() {
+        it('load schedule of monday', async function() {
             const response = await jikanjs.loadSchedule('monday');
 
             assert.isDefined(response.monday, 'monday should be defined');
@@ -182,7 +208,7 @@ describe(`${pkg.name}/API/v2`, function() {
             assert.equal(response.top[0].rank, 51, 'wrong rank');
         })
 
-        it('load anime top page 1 and onyle for the subtype tv', async function() {
+        it('load anime top page 1 and only for the subtype tv', async function() {
             const response = await jikanjs.loadTop('anime', 1, 'tv');
 
             assert.isDefined(response.top, 'top should be defined');
@@ -192,8 +218,28 @@ describe(`${pkg.name}/API/v2`, function() {
         })
     })
 
+    describe('#Club', function() {
+        it('fetch information of the club with the id 1 (Usable at API Version 3+)', async function() {
+            try {
+                await await jikanjs.loadClub(1);
+
+            } catch (error) {
+                assert.equal(error.message, `Usable at API version 3+`);
+            }
+        })
+
+        it('fetch Member information of the club with the id 1 (Usable at API Version 3+)', async function() {
+            try {
+                await await jikanjs.loadClubMembers(1, 1);
+
+            } catch (error) {
+                assert.equal(error.message, `Usable at API version 3+`);
+            }
+        })
+    })
+
     describe('#Meta', function() {
-        it('load meta data of type anime in the perioade weekly', async function() {
+        it('load meta data of type anime in the periode weekly', async function() {
             const response = await jikanjs.loadMeta('anime', 'weekly');
 
             assert.isNotEmpty(response, 'response should not be empty');
@@ -217,20 +263,26 @@ describe(`${pkg.name}/API/v2`, function() {
             assert.equal(response.mal_id, 1, 'wrong id, should be 1');
             assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
         })
+
+        it('urlParts isn\'t an array', async function() {
+            var urlParts = {a: 'anime', b: 1};
+            try {
+                await await jikanjs.raw(urlParts);
+
+            } catch (error) {
+                assert.equal(error.message, `The given parameter should be an array like [anime, 1] but given was ${urlParts}`);
+            }
+        })
     })
-    /*
+
     describe('#Error Handling', function() {
 
         it('400 - Invalid extended request', async function() {
-            var extension = 'titles';
-
             try {
-                await jikanjs.loadAnime(21, extension);
+                await jikanjs.loadAnime(21, 'titles');
 
             } catch (error) {
-                assert.equal(error.message, `Invalid extended request: "${extension}"`);
-                assert.equal(error.status, 400);
-                assert.equal(error.url, `${jikanjs.settings.getBaseURL()}/anime/21/titles`);
+                assert.equal(error.message, `Invalid or incomplete endpoint`);
             }
         })
 
@@ -239,9 +291,7 @@ describe(`${pkg.name}/API/v2`, function() {
                 await jikanjs.loadAnime(0);
 
             } catch (error) {
-                assert.equal(error.message, 'No ID/Path Given');
-                assert.equal(error.status, 404);
-                assert.equal(error.url, `${jikanjs.settings.getBaseURL()}/anime`);
+                assert.equal(error.message, 'Invalid or incomplete endpoint');
             }
         })
 
@@ -250,13 +300,10 @@ describe(`${pkg.name}/API/v2`, function() {
                 await jikanjs.loadAnime(2);
 
             } catch (error) {
-                assert.equal(error.message, 'File does not exist');
-                assert.equal(error.status, 404);
-                assert.equal(error.url, `${jikanjs.settings.getBaseURL()}/anime/2`);
+                assert.equal(error.message, '404 on https://myanimelist.net/anime/2/');
             }
         })
     })
-    */
 });
 
 describe(`${pkg.name}/API/v3`, function() {
@@ -266,6 +313,17 @@ describe(`${pkg.name}/API/v3`, function() {
     beforeEach(done => {
         jikanjs.settings.version = 3;
         done();
+    });
+
+    describe('#General', function() {
+
+        it('API version', function() {
+            assert.equal(jikanjs.settings.version, 3, 'the api version should be 3');
+        });
+
+        it('API base url', function() {
+            assert.equal(jikanjs.settings.getBaseURL().href, 'https://api.jikan.moe/v3', 'the Base url should be https://api.jikan.moe/v3');
+        });
     });
 
     describe('#Anime', function() {
@@ -327,7 +385,7 @@ describe(`${pkg.name}/API/v3`, function() {
                 await jikanjs.search('anime', query);
 
             } catch (error) {
-                assert.equal(error.message, `The given query must be of minium 3 letters! Given query '${query}' has only ${query.length} letters.`);
+                assert.equal(error.message, `The given query must be of minimum 3 letters! Given query '${query}' has only ${query.length} letters.`);
             }
         })
 
@@ -352,21 +410,36 @@ describe(`${pkg.name}/API/v3`, function() {
             const response = await jikanjs.loadSeason(2012, 'winter');
 
             assert.isDefined(response.anime, 'season should be defined');
-            assert.equal(response.season_year, `2012`, 'Season Year shoulb be 2012');
+            assert.equal(response.season_year, `2012`, 'Season Year should be 2012');
             assert.equal(response.season_name, `Winter`, 'Season name should be Winter');
             assert.isNotEmpty(response, 'response should not be empty');
             assert.isAbove(response.anime.length, 1, 'season should have minimum of one series');
         })
+
+        it('load all upcoming anime [Season Later]', async function() {
+            const response = await jikanjs.loadSeasonLater();
+
+            assert.isNotEmpty(response, 'response should not be empty');
+            assert.isDefined(response.anime, 'season should be defined');
+            assert.equal(response.season_name, `Later`, 'Season type should be Later');
+        })
+
+        it('fetch all registered years with their seasons [Season Archive]', async function() {
+            const response = await jikanjs.loadSeasonArchive();
+
+            assert.isNotEmpty(response, 'response should not be empty');
+            assert.isDefined(response.archive, 'season archive should be defined');
+        })
     })
 
     describe('#Schedule', function() {
-        it('load the current shadule', async function() {
+        it('load the current schedule', async function() {
             const response = await jikanjs.loadSchedule();
 
             assert.isNotEmpty(response, 'response should not be empty');
         })
 
-        it('load shedule of monday', async function() {
+        it('load schedule of monday', async function() {
             const response = await jikanjs.loadSchedule('monday');
 
             assert.isDefined(response.monday, 'monday should be defined');
@@ -375,11 +448,11 @@ describe(`${pkg.name}/API/v3`, function() {
     })
 
     describe('#Genre', function() {
-        it('load Animes of the genre Action Anime', async function() {
+        it('load Anime of the genre Action Anime', async function() {
             const response = await jikanjs.loadGenre('anime', 1);
 
             assert.isNotEmpty(response, 'response should not be empty');
-            assert.equal(response.mal_url.mal_id, 1, 'returend genre should be 1');
+            assert.equal(response.mal_url.mal_id, 1, 'returned genre should be 1');
             assert.isDefined(response.anime, 'anime should be defined');
         })
     })
@@ -389,7 +462,7 @@ describe(`${pkg.name}/API/v3`, function() {
             const response = await jikanjs.loadProducer(1);
 
             assert.isNotEmpty(response, 'response should not be empty');
-            assert.equal(response.meta.mal_id, 1, 'returend producer id should be 1');
+            assert.equal(response.meta.mal_id, 1, 'returned producer id should be 1');
             assert.isDefined(response.anime, 'anime should be defined');
         })
     })
@@ -399,7 +472,7 @@ describe(`${pkg.name}/API/v3`, function() {
             const response = await jikanjs.loadMagazine(1);
 
             assert.isNotEmpty(response, 'response should not be empty');
-            assert.equal(response.meta.mal_id, 1, 'returend magazine id should be 1');
+            assert.equal(response.meta.mal_id, 1, 'returned magazine id should be 1');
             assert.isDefined(response.manga, 'manga should be defined');
         })
     })
@@ -436,7 +509,7 @@ describe(`${pkg.name}/API/v3`, function() {
             assert.equal(response.top[0].rank, 51, 'wrong rank');
         })
 
-        it('load anime top page 1 and onyle for the subtype tv', async function() {
+        it('load anime top page 1 and only for the subtype tv', async function() {
             const response = await jikanjs.loadTop('anime', 1, 'tv');
 
             assert.isDefined(response.top, 'top should be defined');
@@ -446,8 +519,24 @@ describe(`${pkg.name}/API/v3`, function() {
         })
     })
 
+    describe('#Club', function() {
+        it('load information of the Club with the id 1', async function() {
+            const response = await jikanjs.loadClub(1);
+
+            assert.isNotEmpty(response, 'response should not be empty');
+            assert.equal(response.mal_id, 1, 'returned club id should be 1');
+        })
+
+        it('load Member information of the Club with the id 1', async function() {
+            const response = await jikanjs.loadClubMembers(1);
+
+            assert.isNotEmpty(response, 'response should not be empty');
+            assert.isDefined(response.members, 'members should be defined');
+        })
+    })
+
     describe('#Meta', function() {
-        it('load meta data of type anime in the perioade weekly', async function() {
+        it('load meta data of type anime in the periode weekly', async function() {
             const response = await jikanjs.loadMeta('anime', 'weekly');
 
             assert.isNotEmpty(response, 'response should not be empty');
@@ -470,6 +559,46 @@ describe(`${pkg.name}/API/v3`, function() {
             assert.isNotEmpty(response, 'response should not be empty');
             assert.equal(response.mal_id, 1, 'wrong id, should be 1');
             assert.equal(response.title, 'Cowboy Bebop', 'wrong title should be Cowboy Bebop');
+        })
+
+        it('urlParts isn\'t an array', async function() {
+            var urlParts = {a: 'anime', b: 1};
+            try {
+                await await jikanjs.raw(urlParts);
+
+            } catch (error) {
+                assert.equal(error.message, `The given parameter should be an array like [anime, 1] but given was ${urlParts}`);
+            }
+        })
+    })
+
+    describe('#Error Handling', function() {
+
+        it('400 - Invalid extended request', async function() {
+            try {
+                await jikanjs.loadAnime(21, 'titles');
+
+            } catch (error) {
+                assert.equal(error.message, `Invalid or incomplete endpoint`);
+            }
+        })
+
+        it('404 - No ID/Path Given', async function() {
+            try {
+                await jikanjs.loadAnime(0);
+
+            } catch (error) {
+                assert.equal(error.message, 'Invalid or incomplete endpoint');
+            }
+        })
+
+        it('404 - File does not exist', async function() {
+            try {
+                await jikanjs.loadAnime(2);
+
+            } catch (error) {
+                assert.equal(error.message, '404 on https://myanimelist.net/anime/2/');
+            }
         })
     })
 });
